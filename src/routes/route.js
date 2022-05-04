@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const cnt = require('../controller/controller');
 
-//here write your code
+router.post('/functionup/colleges' , cnt.createClg )
 
 module.exports = router;

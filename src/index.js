@@ -1,4 +1,3 @@
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const route = require('./routes/route.js');
@@ -8,8 +7,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
-mongoose.connect('mongodb+srv://mraykwar99:LvIVaS9x3LyxfoQV@cluster0.1d2my.mongodb.net/Project-2-OpenToIntern?retryWrites=true&w=majority',{useNewurlParser:true})
+mongoose.connect('mongodb+srv://mraykwar99:LvIVaS9x3LyxfoQV@cluster0.1d2my.mongodb.net/groupXDatabase?retryWrites=true&w=majority',{useNewurlParser:true})
 .then( () => console.log("mongoDb is connected"))
 .catch(err => console.log(err));
 
