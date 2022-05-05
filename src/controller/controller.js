@@ -9,6 +9,14 @@ const createClg = async function (req, res) {
         if (!data.name) return res.status(400).send({ status: false, msg: "Name is Requried" })
         if (!data.fullName) return res.status(400).send({ status: false, msg: "Full Name is Required" })
         if (!data.logoLink) return res.status(400).send({ status: false, msg: "Logolink is Requried" })
+        
+        const isValidLink = function(value) {
+        if (!(/(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/.test(value.trim()))) {
+                return false
+            }
+            return true
+        }
+        if(isValidLink(data.logoLink)) return res.status(400).send({ status:false , msg:"Logo link is not valid" })
 
         if (data.isDeleted == true) return res.status(400).send({ status: false, msg: "You can not set deleted to true" })
 
