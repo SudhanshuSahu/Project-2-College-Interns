@@ -22,8 +22,7 @@ const internSchema = new mongoose.Schema({
         type: Number,
         required: true,
         unique: true,
-        minlength: 10,
-        maxlength: 10
+    
 
     },
     collegeId: {

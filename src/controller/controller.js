@@ -13,7 +13,7 @@ const createClg = async function (req, res) {
         if (data.isDeleted == true) return res.status(400).send({ status: false, msg: "You can not set deleted to true" })
 
         let checkName = await collegeModel.findOne({ name: data.name })
-        if (checkName) return res.status(400).send({ status: false, msg: "college name must be unique" })
+        if (checkName) return res.status(400).send({ gistatus: false, msg: "college name must be unique" })
         
         if (data.name.split(" ").length > 1) {
             return res.status(400).send({ status: false, msg: "please provide the Valid Abbreviation" });
