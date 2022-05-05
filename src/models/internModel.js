@@ -1,8 +1,13 @@
 const mongoose = require("mongoose")
 const ObjectId = mongoose.Schema.Types.ObjectId
-var validateEmail = function (email) {
-    var re = /^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/;
+let validateEmail = function (email) {
+    let re = /^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/;
     return re.test(email)
+};
+
+let validateMobile = function (mobile) {
+    if(mobile.toString().length != 10) return false
+    return true
 };
 
 const internSchema = new mongoose.Schema({
@@ -22,9 +27,7 @@ const internSchema = new mongoose.Schema({
         type: Number,
         required: true,
         unique: true,
-        minlength: 10,
-        maxlength: 10
-
+        validate: [validateMobile, 'Please fill a valid Mobile Number']
     },
     collegeId: {
         type: ObjectId,
@@ -35,5 +38,7 @@ const internSchema = new mongoose.Schema({
         default: false
     }
 }, { timestamps: true })
+
+
 
 module.exports = mongoose.model("Intern", internSchema)
