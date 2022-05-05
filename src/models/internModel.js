@@ -6,7 +6,7 @@ var validateEmail = function (email) {
 };
 
 var validateMobile = function (mobile) {
-    if(mobile.toString.length != 10) return false
+    if(mobile.toString().length != 10) return false
     return true
 };
 
