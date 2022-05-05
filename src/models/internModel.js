@@ -5,6 +5,11 @@ var validateEmail = function (email) {
     return re.test(email)
 };
 
+var validateMobile = function (mobile) {
+    if(mobile.toString.length != 10) return false
+    return true
+};
+
 const internSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -22,8 +27,7 @@ const internSchema = new mongoose.Schema({
         type: Number,
         required: true,
         unique: true,
-    
-
+        validate: [validateMobile, 'Please fill a valid Mobile Number']
     },
     collegeId: {
         type: ObjectId,
