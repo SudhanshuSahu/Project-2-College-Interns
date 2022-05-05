@@ -10,16 +10,27 @@ const createClg = async function (req, res) {
         if (!data.fullName) return res.status(400).send({ status: false, msg: "Full Name is Required" })
         if (!data.logoLink) return res.status(400).send({ status: false, msg: "Logolink is Requried" })
 
+        const isValidLink = function (value) {
+            if (!(/(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/.test(value.trim()))) {
+                return false
+            }
+            return true
+        }
+        if (!isValidLink(data.logoLink)) return res.status(400).send({ status: false, msg: "Logo link is not valid" })
+
         if (data.isDeleted == true) return res.status(400).send({ status: false, msg: "You can not set deleted to true" })
 
-        let checkName = await collegeModel.findOne({ name: data.name })
-        if (checkName) return res.status(400).send({ gistatus: false, msg: "college name must be unique" })
-        
+        let name = (data.name).toLowerCase()
+        // data.name = name
+        let checkName = await collegeModel.findOne({ name: name })
+        if (checkName) return res.status(400).send({ status: false, msg: "college name must be unique" })
+
+
         if (data.name.split(" ").length > 1) {
             return res.status(400).send({ status: false, msg: "please provide the Valid Abbreviation" });
         }
-       
-    
+
+
         let college = await collegeModel.create(data);
         return res.status(201).send({ status: true, data: college })
     }
@@ -39,19 +50,29 @@ const createIntern = async function (req, res) {
         if (!data.name) return res.status(400).send({ status: false, msg: "Name is Requried" })
         if (!data.email) return res.status(400).send({ status: false, msg: "Email is Requried" })
         if (!data.mobile) return res.status(400).send({ status: false, msg: "Mobile Number is Requried" })
+          // if ((data.mobile).toString().length != 10) return res.status(400).send({ status: false, msg: "Mobile number should be of 10 digit" })
+          let val = data.mobile
+          if (/^\d{10}$/.test(val)) {
+              // value is ok, use it
+          } else {
+              // Invalid number; must be ten digits
+              // number.focus()
+              return res.status(400).send({ status: false, msg: "Mobile number should be of 10 digit and should contain Numbers Only" })
+          }
+          let checkMobile = await internModel.findOne({ mobile: data.mobile })
+          if (checkMobile) return res.status(400).send({ status: false, msg: "Mobile number must be unique" })
         if (!data.collegeName) return res.status(400).send({ status: false, msg: "College name is Requried" })
-        
-    
+
+
         let mailFormat = regex.test(data.email)
         if (mailFormat == false) return res.status(400).send({ status: false, msg: "email not valid" })
 
         let checkEmail = await internModel.findOne({ email: data.email })
         if (checkEmail) return res.status(400).send({ status: false, msg: "Email must be unique" })
 
-        if ((data.mobile).toString().length != 10) return res.status(400).send({ status: false, msg: "Mobile number should be of 10 digit" })
+      
 
-        let checkMobile = await internModel.findOne({ mobile: data.mobile })
-        if (checkMobile) return res.status(400).send({ status: false, msg: "Mobile number must be unique" })
+      
 
         if (data.isDeleted == true) return res.status(400).send({ status: false, msg: "You can not set deleted to true" })
 
@@ -76,7 +97,7 @@ const getClg = async function (req, res) {
         if (key.length == 0) return res.status(400).send({ status: false, msg: "Query should not be empty" })
         if (key.length > 1) return res.status(400).send({ status: false, msg: "You have to give only one query" })
 
-        if (key[0] != "collegeName") return res.status(400).send({ status: false, msg: "You must give only college name in the query" })
+        if (key[0] != "collegeName") return res.status(400).send({ status: false, msg: "Only collegeName Should be required in query" })
 
         let clg = await collegeModel.findOne({ name: data.collegeName })
         if (!clg) return res.status(400).send({ status: false, msg: "College name is not correct" })
