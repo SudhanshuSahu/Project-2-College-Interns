@@ -50,8 +50,9 @@ const createIntern = async function (req, res) {
         if (!data.email) return res.status(400).send({ status: false, msg: "Email is Requried" })
         if (!data.mobile) return res.status(400).send({ status: false, msg: "Mobile Number is Requried" })
         
-        if ((data.mobile).toString().length != 10) return res.status(400).send({ status: false, msg: "Mobile number should be of 10 digit" })
         if (/^[0-9]+$/.test(data.mobile) == false) return res.status(400).send({ status: false, msg: "Mobile number should contain Numbers Only" })
+        if ((data.mobile).toString().length != 10) return res.status(400).send({ status: false, msg: "Mobile number should be of 10 digit" })
+        
         
         let checkMobile = await internModel.findOne({ mobile: data.mobile })
         if (checkMobile) return res.status(400).send({ status: false, msg: "Mobile number must be unique" })
