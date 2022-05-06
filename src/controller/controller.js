@@ -7,6 +7,9 @@ const createClg = async function (req, res) {
         if (Object.keys(data).length === 0) return res.status(400).send({ status: false, msg: "data must be given" })
 
         if (!data.name) return res.status(400).send({ status: false, msg: "Name is Requried" })
+        let Name = /^[A-Za-z\s]+$/.test(data.name)
+        if(!Name) return res.status(400).send({status:false, msg:"College Name should not be numeric"})
+
         if (!data.fullName) return res.status(400).send({ status: false, msg: "Full Name is Required" })
         if (!data.logoLink) return res.status(400).send({ status: false, msg: "Logolink is Requried" })
 
@@ -47,6 +50,8 @@ const createIntern = async function (req, res) {
         if (Object.keys(data).length === 0) return res.status(400).send({ status: false, msg: "data must be given" })
 
         if (!data.name) return res.status(400).send({ status: false, msg: "Name is Requried" })
+        let checkName = /^[A-Za-z\s]+$/.test(data.name)
+        if(!checkName) return res.status(400).send({status:false, msg:"Name should not be numeric"})
         if (!data.email) return res.status(400).send({ status: false, msg: "Email is Requried" })
         if (!data.mobile) return res.status(400).send({ status: false, msg: "Mobile Number is Requried" })
         
@@ -56,7 +61,10 @@ const createIntern = async function (req, res) {
         
         let checkMobile = await internModel.findOne({ mobile: data.mobile })
         if (checkMobile) return res.status(400).send({ status: false, msg: "Mobile number must be unique" })
-        if (!data.collegeName) return res.status(400).send({ status: false, msg: "College name is Requried" })
+        if (!data.collegeName) return res.status(400).send({ status: false, msg: "College name is Requried" })   
+          let checkCollegeName = /^[A-Za-z\s]+$/.test(data.collegeName)
+        if(!checkCollegeName) return res.status(400).send({status:false, msg:"College Name should not be numeric"})
+
 
 
         let mailFormat = regex.test(data.email)
