@@ -73,12 +73,12 @@ const createIntern = async function (req, res) {
         let checkEmail = await internModel.findOne({ email: data.email })
         if (checkEmail) return res.status(400).send({ status: false, msg: "Email must be unique" })  
 
-        if (data.isDeleted == true) return res.status(400).send({ status: false, msg: "You can not set deleted to true" })
+       
 
         let collegeid = await collegeModel.findOne({ name: data.collegeName }).select({ _id: 1 })
         if (!collegeid) return res.status(400).send({ status: false, msg: "Enter a valid college name" })
         data.collegeId = collegeid._id
-        delete data.collegeName
+       
 
         let intern = await internModel.create(data);
         return res.status(201).send({ status: true, data: intern })
